@@ -1,0 +1,12 @@
+[submodule "codeassign-cli"]
+	path = codeassign-cli
+	url = git@github.com:codeassign/codeassign-cli.git
+[submodule "codeassign-backend"]
+	path = codeassign-backend
+	url = git@github.com:codeassign/codeassign-backend.git
+[submodule "codeassign-frontend"]
+	path = codeassign-frontend
+	url = git@github.com:codeassign/codeassign-frontend.git
+[submodule "codeassign-editor"]
+	path = codeassign-editor
+	url = git@github.com:codeassign/codeassign-editor.git
