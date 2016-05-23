@@ -8,10 +8,9 @@ More info to come soon!
 Getting started
 ---------------
 
-To pull in all the project submodules, run:
+Clone this project recursively in order to pull in all the modules!
 
 ```sh
-git submodule init
-git submodule update
+git clone --recursive ssh://git@github.com/codeassign/codeassign
 ```
 
