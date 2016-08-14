@@ -1,0 +1,26 @@
+version: '2'
+services:
+    db:
+        image: postgres
+        volumes:
+            - ./srv/pg-data:/var/lib/postgresql/data
+        restart: always
+    frontend-files:
+        build: ./codeassign-frontend
+        volumes:
+            - frontend:/usr/src/app/dist
+        restart: always
+    frontend:
+        image: kyma/docker-nginx
+        volumes:
+            - frontend:/var/www:ro
+        restart: always
+    backend:
+        build: ./codeassign-backend
+        links:
+            - db
+        depends_on:
+            - db
+        restart: always
+volumes:
+    frontend: {}
