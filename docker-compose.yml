@@ -4,6 +4,10 @@ services:
         image: postgres
         volumes:
             - ./srv/pg-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=cense
+            - POSTGRES_PASSWORD=cense
+            - POSTGRES_DB=cense
         restart: always
     frontend-files:
         build: ./codeassign-frontend
