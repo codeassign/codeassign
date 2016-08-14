@@ -9,7 +9,6 @@ services:
         build: ./codeassign-frontend
         volumes:
             - frontend:/usr/src/app/dist
-        restart: always
     frontend:
         image: kyma/docker-nginx
         volumes:
