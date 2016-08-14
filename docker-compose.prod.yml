@@ -1,0 +1,21 @@
+version: '2'
+services:
+    nginx:
+        image: jwilder/nginx-proxy
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - ./srv/ssl:/etc/nginx/certs:ro
+        restart: always
+    nginx-lets-encrypt-companion:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        depends_on:
+            - nginx
+        volumes_from:
+            - nginx
+        volumes:
+            - ./srv/ssl:/etc/nginx/certs:rw
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        restart: always
