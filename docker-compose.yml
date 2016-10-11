@@ -5,25 +5,29 @@ services:
         volumes:
             - ./srv/pg-data:/var/lib/postgresql/data
         environment:
-            - POSTGRES_USER=cense
-            - POSTGRES_PASSWORD=cense
-            - POSTGRES_DB=cense
+            - POSTGRES_USER=codeassign
+            - POSTGRES_PASSWORD=codeassign
+            - POSTGRES_DB=codeassign
         restart: always
+
     frontend-files:
         build: ./codeassign-frontend
         volumes:
             - frontend:/usr/src/app/dist
+
     frontend:
         image: kyma/docker-nginx
         volumes:
             - frontend:/var/www:ro
         restart: always
+
     backend:
         build: ./codeassign-backend
         links:
             - db
-        depends_on:
-            - db
+        ports:
+            - 5000:80
         restart: always
+
 volumes:
     frontend: {}
