@@ -1,0 +1,76 @@
+#!/bin/bash
+
+[[ -f ca.conf ]] && source ca.conf
+export UID
+export USER
+
+usage() {
+  echo "Usage: ./app {build|deploy|shell|clean|stop} {prod|stage|dev}"
+}
+
+check_and_define_env() {
+  if [[ -n $1 ]]; then # argument overwrites configuration
+    CA_ENV=$1
+  fi
+
+  case $CA_ENV in
+    prod)
+      COMPOSE_FILE="docker-compose.prod.yml"
+      VERSION="latest"
+      ;;
+    stage)
+      COMPOSE_FILE="docker-compose.stage.yml"
+      VERSION="staging"
+      ;;
+    dev)
+      COMPOSE_FILE="docker-compose.dev.yml"
+      VERSION=""
+      ;;
+    *)
+      echo "Invalid environment!"
+      usage
+      exit
+      ;;
+  esac
+
+  echo "Environment: $CA_ENV"
+}
+
+build() {
+  check_and_define_env $1
+  docker-compose -f $COMPOSE_FILE build
+}
+
+deploy() {
+  check_and_define_env $1
+  if [[ -z $VERSION ]]; then
+    echo "You cannot deploy development!"
+    exit
+  fi
+  docker push $IMAGE:$VERSION
+}
+
+shell() {
+  check_and_define_env $1
+  docker-compose -f $COMPOSE_FILE up -d
+  docker-compose -f $COMPOSE_FILE exec $SERVICE bash
+}
+
+clean() {
+  check_and_define_env $1
+  docker-compose -f $COMPOSE_FILE down
+}
+
+stop() {
+  check_and_define_env $1
+  docker-compose -f $COMPOSE_FILE stop
+}
+
+case $1 in
+  build) build $2;;
+  deploy) deploy $2;;
+  shell) shell $2;;
+  clean) clean $2;;
+  stop) stop $2;;
+  *) usage;;
+esac
